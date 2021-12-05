@@ -177,3 +177,13 @@ can recognize PCM 16bit wav file(but output quality is reduced accoding to Table
     * [Nim:   AVR Arduino Uno/Nano version is here. ](https://github.com/dinau/arduino-wave-player-pwm-super-lite-nim) Completed.
     * [Jalv2: PIC 16F1xxx version is here.](https://bitbucket.org/dinau/16f-pwm-wav-sd-card-player/wiki/Home) Completed.
     * [C/C++:   mbed version is here.](https://os.mbed.com/users/mimi3/code/wave_player_super_lite/) Completed. 
+
+### Other links2
+* Wave player project Super lite series
+    * Nim language
+        * [Arduino Wave Player PWM Super Lite Nim / Nim](https://github.com/dinau/arduino-wave-player-pwm-super-lite-nim) Completed.
+        * [STM32 Wave Player PWM Super Lite Nim / STM32(F0,L1,F3,F4)  Nim](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim) Completed. 
+    * C++ language
+        * [Wave Player Super Lite / STM32(F0,L1,F4) / Mbed2 / C++](https://os.mbed.com/users/mimi3/code/wave_player_super_lite) Completed.
+    * Jal language
+        * [Pwm Wave Player Jalv2 / PIC16F1xxx / Jal](https://github.com/dinau/pic16f-wave-palyer-pwm-super-lite) Competed. 
