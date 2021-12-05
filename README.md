@@ -3,18 +3,17 @@
 16bit resolution PWM wave player with SD card, super lite version.
 
 ### Supported Board/MCU:
-* [nulceo_f030r8](https://os.mbed.com/platforms/ST-Nucleo-F030R8/)  
-* [nucleo_l152re](https://os.mbed.com/platforms/ST-Nucleo-L152RE/)  
-* [nulceo_f401re](https://os.mbed.com/platforms/ST-Nucleo-F401RE/)  
-* [nulceo_f411re](https://os.mbed.com/platforms/ST-Nucleo-F411RE/)  
+* [NULCEO-F030R8](https://os.mbed.com/platforms/ST-Nucleo-F030R8/)  
+* [NUCLEO-L152RE](https://os.mbed.com/platforms/ST-Nucleo-L152RE/)  
+* [NULCEO-F401RE](https://os.mbed.com/platforms/ST-Nucleo-F401RE/)  
+* [NULCEO-F411RE](https://os.mbed.com/platforms/ST-Nucleo-F411RE/)  
 * [STM32F0Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f0discovery.html)  
 * [STM32F3Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f3discovery.html)  
 * [STM32F4Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f4discovery.html)  
 
 ### Supported SD card:
 * SDSC/SDHC card, FAT16 and FAT32.  
-    1. At first, format SD card with SD Card Formatter  
-        * <https://www.sdcard.org/downloads/formatter_4/index.html>  
+    1. At first, format SD card with [SD Card Formatter](https://www.sdcard.org/downloads/formatter_4/index.html)
     1.  Copy PCM wav files to the SD card on the root directory.  
 
 ### Supported PCM Format:
@@ -30,7 +29,7 @@
 * _Play_ : One click from Pause.  
 
 ### Hardware setting/Schematic: (16bit sound resolution)
-* Refer to the file, "port_setting.txt".  
+* Refer to the file, [port_setting.txt](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.txt).
 * See folder doc\/*  
 ![](http://mpu.up.seesaa.net/image/16bit-wave-player-output-schema.png)  
 
@@ -70,7 +69,7 @@ Pin side
 * Right lower(Low) PWM 8bit out: PC_8 (TM3_CH3)  
 
 ### LED indicator:
-* See "port_setting.txt".
+* See [port_setting.txt](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.txt).
 * If set up LED device to "LED indicator port", it will be dimmer during play mode (regular speed) and pause mode (fast speed).
 
 ### Nim compiler:
@@ -84,6 +83,7 @@ Pin side
 * Example: (NUCLEO-L152RE board)
     ```sh
     $ cd src/L1/l152re/nucleo_l152re
+    $ make
     .........................................................
     CC: xprintf
     CC: startup_stm32l152xe
@@ -108,20 +108,22 @@ Pin side
     ```
 ### Generated files are,
 ```
-BINHEX\/nucleo_l152re.**bin**  
-BINHEX\/nucleo_l152re.**hex**  
+BINHEX/nucleo_l152re.bin  
+BINHEX/nucleo_l152re.hex  
+...
 ```
 You can just copy the **bin** file to mbed drive,    
 or can flash the **hex** file with ST-Link utility.  
   
-If you don't like to compile from source code, you can immediately flash doc\/hex/\*.hex or \*.bin files. 
+If you don't like to compile from source code, you can immediately upload [doc/hex/*.hex or *.bin files](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/tree/main/doc/hex) to flash.
+
 
 ### Output music filename  through UART port.
-By default music filename is send through default UART(USB-CDC(Nucleo boards)) port.  
+By default music filename is send through default UART(USB-CDC(Nucleo boards)) port.    
+Baudrate is **115200bps**.  
 ![](http://mpu.up.seesaa.net/image/filename-to-uart-port.png)  
-If you don't need UART output feature, set **UART_INFO\* = false** in src\/conf_sys.nim and  
+If you don't need UART output feature, set **UART_INFO\* = false** in [src/conf_sys.nim](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/src/conf_sys.nim) and  
 recompile the project.
-
 ### Simple less bits mode:
 If set **PWM16BIT\* = false** in src/conf_sys.nim and recompile the project, **simple less bits mode** is enabled.  
 In spite of less parts, wirings and PCM bit length, it has fairly sound quality.
