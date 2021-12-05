@@ -63,6 +63,8 @@ switch "panics", "on"
 --passC:"--specs=nano.specs"
 --passC:"-Wno-discarded-qualifiers"
 --passL:"-lc -lm -lgcc"
+#--passC:"-flto"
+#--passL:"-flto"
 switch "passL","-Wl,-Map=$#" % [target_build_path & ".map"]
 
 switch "nimcache",".nimcache"
