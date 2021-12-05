@@ -1,0 +1,16 @@
+*.hex
+*.bin
+*.o
+*.elf
+*.map
+GPATH
+GTAGS
+GRTAGS
+.hg*
+
+src/nimcache
+BINHEX/
+.nimcache
+hex/
+/doc/hex/*.hex
+/doc/hex/*.bin

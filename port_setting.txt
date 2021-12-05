@@ -1,0 +1,53 @@
+#[
+
+---------------------------
+- Push Button SW (default(on board))
+---------------------------
+PA_0 (Hi active),  STM32F0Discovery,
+                   STM32F3Discovery,
+                   STM32F4Discovery
+PC_13 (Low active), others
+
+---------------------------
+- LED indicator
+---------------------------
+PE_11 (on board LED green,LD7), STM32F3Discovery
+PD_12 (on board LED green,LD4), STM32F4Discovery
+PB_10, D6, others
+
+---------------------------
+- TEST_PORT
+---------------------------
+PA_8, D7
+
+---------------------------
+### USART2 ###
+---------------------------
+PA_2, D1   USART2_TX
+PA_3, D0   USART2_RX
+
+---------------------------
+### PWM With TIM3 ###
+---------------------------
+Use PWM3-1,PWM3-2 with TIM3
+PB_5, D4    PWM_PORT_LEFT_HI    // TIM3_CH2
+PB_4, D5    PWM_PORT_RIGHT_HI   // TIM3_CH1
+
+Use PWM3-3,PWM3-4 with TIM3
+PC_9, -     PWM_PORT_LEFT_LOW   // TIM3_CH4
+PC_8, -     PWM_PORT_RIGHT_LOW  // TIM3_CH3
+
+---------------------------
+### SPI1 ###
+---------------------------
+(CS) chip select port,
+    PB_8: STM32F3Discovery,
+          STM32F4Discovery
+    PB_6, D10, others
+#
+PA_5, D13 (SCK)
+PA_6, D12 (MISO)
+PA_7, D11 (MOSI)
+
+]#
+

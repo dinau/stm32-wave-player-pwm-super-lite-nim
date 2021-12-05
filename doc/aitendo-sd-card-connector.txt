@@ -1,0 +1,30 @@
+/* SD card Interface connection
+ *           :  aitendo   :  General
+ *  MCU sig. : IFB-254-SD :  PIN name
+     ---     :    1       :   9 dat2
+       CS    :    2       :   1 cs/dat3
+      MOSI   :    3       :   2 di/cmd
+       GND   :    4       :   3 vss1
+       VCC   :    5       :   4 vdd
+       CLK   :    6       :   5 clk
+       GND   :    7       :   6 vss2
+      MISO   :    8       :   7 do/dat0
+       ---   :    9       :   8 dat1
+       ---   :   10       :  11 wp
+       ---   :   11       :  10 cd1
+       ---   :   12       :  - case GND
+
+Top view: Card side
+CS GND  CLK MISO
+2  4    6   8
+  IFB-254-SD
+1  3    5   7
+-  MOSI VCC GND
+
+Bottom view:
+-  -  MISO CLK GND  CS
+12 10 8    6   4    2
+  IFB-254-SD
+11  9 7    5   3    1
+-   - GND  VCC MOSI -
+*/
