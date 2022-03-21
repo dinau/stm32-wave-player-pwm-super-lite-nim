@@ -1,85 +1,89 @@
-import os,strutils
+import os, strutils
 
---hint:"Conf:off"
---verbosity:1
+if NimVersion > "1.6.0":
+    --hint: "Conf:off" # nim-1.6.0 or later
+
+--verbosity: 1
 
 const
-    TARGET    = "start"
-    SRC_DIR   = "."
+    TARGET = "start"
+    SRC_DIR = "."
 
     # Define binutils
-    OBJCOPY   = "arm-none-eabi-objcopy"
-    OBJDUMP   = "arm-none-eabi-objdump"
-    OBJSIZE   = "arm-none-eabi-size"
+    OBJCOPY = "arm-none-eabi-objcopy"
+    OBJDUMP{.used.} = "arm-none-eabi-objdump"
+    OBJSIZE = "arm-none-eabi-size"
 
     # build path
     BUILD_DIR = "BINHEX"
     OUT_NAME = getCurrentDir().splitFile.name
-    target_build_path = os.joinPath(BUILD_DIR,OUT_NAME)
-    target_src_path   = os.joinPath(SRC_DIR,TARGET)
+    target_build_path = os.joinPath(BUILD_DIR, OUT_NAME)
+    target_src_path = os.joinPath(SRC_DIR, TARGET)
 
 switch "o", joinPath(BUILD_DIR, OUT_NAME) & ".elf"
 
 # for gcc
-switch "arm.standalone.gcc.exe","arm-none-eabi-gcc"
-switch "arm.standalone.gcc.linkerexe","arm-none-eabi-gcc"
-switch "arm.any.gcc.exe","arm-none-eabi-gcc"
-switch "arm.any.gcc.linkerexe","arm-none-eabi-gcc"
+switch "arm.standalone.gcc.exe", "arm-none-eabi-gcc"
+switch "arm.standalone.gcc.linkerexe", "arm-none-eabi-gcc"
+switch "arm.any.gcc.exe", "arm-none-eabi-gcc"
+switch "arm.any.gcc.linkerexe", "arm-none-eabi-gcc"
 #
-switch "gcc.options.always" , ""
-switch "gcc.options.debug" ,""
-switch "gcc.options.size" ,"-Os"
-switch "gcc.options.speed" ,"-Os"
+switch "gcc.options.always", ""
+switch "gcc.options.debug", ""
+switch "gcc.options.size", "-Os"
+switch "gcc.options.speed", "-Os"
 
 # for clang
-switch "arm.standalone.clang.exe","clang"
-switch "arm.standalone.clang.linkerexe","arm-none-eabi-gcc"
+switch "arm.standalone.clang.exe", "clang"
+switch "arm.standalone.clang.linkerexe", "arm-none-eabi-gcc"
 # for  Linux
 switch "gcc.options.linker", "-static"
 #
 # Memory manager and signal handler
-when false:
-    switch "gc","arc"
-    switch "os","any"
-    switch "d","noSignalHandler"
-    switch "d","useMalloc"
-    --passL:"-specs=nosys.specs"
+when true: # Both true and false are ok.
+    switch "gc", "arc"
+    switch "os", "any"
+    switch "d", "noSignalHandler"
+    switch "d", "useMalloc"
+    --passL: "-specs=nosys.specs"
 else:
-    switch "gc","none"
-    switch "os","standalone"
+    switch "gc", "none"
+    switch "os", "standalone"
 
 # Size optimize
---opt:size
-switch "d","danger"
+--opt: size
+switch "d", "danger"
 switch "panics", "on"
 #
---cpu:arm
+--cpu: arm
 
 # Silence warnings of 'not GC-safe'. ???!
 #switch "threadAnalysis:off
 #--listcmd # Verbose display gcc commnand line.
---passC:"-mthumb -ffunction-sections -fdata-sections -Os -g"
---passL:"-Wl,--gc-sections"
---passC:"--specs=nano.specs"
---passC:"-Wno-discarded-qualifiers"
---passL:"-lc -lm -lgcc"
-#--passC:"-flto"
-#--passL:"-flto"
-switch "passL","-Wl,-Map=$#" % [target_build_path & ".map"]
+switch "passC", "-mthumb -ffunction-sections -fdata-sections -Os -g"
+--passL: "-nostartfiles"
+--passL: "-Wl,--gc-sections"
+--passC: "--specs=nano.specs"
+--passL: "--specs=nano.specs"
+--passC: "-Wno-discarded-qualifiers"
+#--passL:"-lc -lm -lgcc"
+--passC: "-flto"
+--passL: "-flto"
+switch "passL", "-Wl,-Map=$#" % [target_build_path & ".map"]
 
-switch "nimcache",".nimcache"
+switch "nimcache", ".nimcache"
 
 #start: xpfintf integer version
-switch "path","lib/xprintf"
-switch "passC","-I../../../../src/lib/xprintf"
+switch "path", "lib/xprintf"
+switch "passC", "-I../../../../src/lib/xprintf"
 
 # path
-switch "path","."
-switch "path","lib"
+switch "path", "."
+switch "path", "lib"
 
 # Define tasks
 task clean, "Clean target":
-    echo "Removed $#, $#" % [BUILD_DIR,nimcacheDir()]
+    echo "Removed $#, $#" % [BUILD_DIR, nimcacheDir()]
     rmDir BUILD_DIR
     rmDir nimcacheDir()
 
@@ -87,17 +91,15 @@ task make, "Build target":
     # Compile target
     exec "nim c " & target_src_path
     # Show target size
-    exec "$# $#.elf" % [OBJSIZE,target_build_path]
+    exec "$# $#.elf" % [OBJSIZE, target_build_path]
     # Generate *.hex file
-    exec "$# -O ihex $#.elf $#.hex" % [OBJCOPY,target_build_path,target_build_path]
+    exec "$# -O ihex $#.elf $#.hex" % [OBJCOPY, target_build_path, target_build_path]
     # Generate *.bin file
-    exec "$# -O binary -S $#.elf $#.bin" % [OBJCOPY,target_build_path,target_build_path]
-    # Generate *.lst file with source code
-    var (output,res) = gorgeEx( "$# -hSC $#.elf" % [OBJDUMP,target_build_path])
-    writeFile(target_build_path & ".lst", output)
-    # Generate *.lst2 file without source code
-    (output,res) = gorgeEx( "$# -hdC -fax $#.elf" % [OBJDUMP,target_build_path])
-    writeFile(target_build_path & ".lst2", output)
+    exec "$# -O binary -S $#.elf $#.bin" % [OBJCOPY, target_build_path, target_build_path]
+    # Gen. assembler list files
+    # Can't redirect to file using exec proc.
+    #exec "$# -hS $#.elf > $#.lst" % [OBJDUMP,target_build_path,target_build_path]
+    #exec "$# -hd $#.elf > $#.lst2" % [OBJDUMP,target_build_path,target_build_path]
 
 #task w, "Upload to Flash":
 #    makeTask()
@@ -106,6 +108,6 @@ task make, "Build target":
 
 task hex, "Copy hex to hex dir":
     mkDir("hex")
-    cpFile(target_build_path & ".hex", os.joinPath("hex",OUT_NAME & ".hex"))
+    cpFile(target_build_path & ".hex", os.joinPath("hex", OUT_NAME & ".hex"))
 
 
