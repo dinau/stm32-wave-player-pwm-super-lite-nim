@@ -67,7 +67,6 @@
 <li><a href="#user-content-nim-compiler">Nim compiler</a></li>
 <li><a href="#user-content-c-compiler-arm-none-eabi-gcc">C compiler: arm-none-eabi-gcc</a></li>
 <li><a href="#user-content-compiling-source-code">Compiling source code</a></li>
-<li><a href="#user-content-generated-files-are">Generated files are</a></li>
 <li><a href="#user-content-output-music-filename--through-uart-port">Output music filename  through UART port</a></li>
 <li><a href="#user-content-simple-less-bits-mode">Simple less bits mode</a></li>
 <li><a href="#user-content-pursue-small-code-size">Pursue small code size</a></li>
@@ -117,8 +116,6 @@
 <a id="user-content-supported-pcm-format" class="anchor" href="#supported-pcm-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported PCM Format</h4>
 <ul>
 <li>PCM wav file that have file extension ".wav" on root directory.</li>
-</ul>
-<ul>
 <li>16bit/8bit, fs(sampling rate)=32kHz,44.1kHz,48kHz.</li>
 <li>Stereo/Mono.</li>
 </ul>
@@ -142,8 +139,6 @@
 <a id="user-content-hardware-settingschematic-16bit-sound-resolution" class="anchor" href="#hardware-settingschematic-16bit-sound-resolution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hardware setting/Schematic: (16bit sound resolution)</h4>
 <ul>
 <li>Refer to the file, <a href="https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.md">port_setting.md</a>.</li>
-</ul>
-<ul>
 <li>See folder doc/*<br>
 <p><img src="http://mpu.up.seesaa.net/image/16bit-wave-player-output-schema.png"></p></li>
 </ul>
@@ -179,8 +174,6 @@
 <a id="user-content-pwm-output-port" class="anchor" href="#pwm-output-port" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PWM output port</h4>
 <ul>
 <li>Left  upper(Hi)  PWM 8bit out: PB_5 (TM3_CH2)</li>
-</ul>
-<ul>
 <li>Right upper(Hi)  PWM 8bit out: PB4  (TM3_CH1)</li>
 <li>Left  lower(Low) PWM 8bit out: PC_9 (TM3_CH4)</li>
 <li>Right lower(Low) PWM 8bit out: PC_8 (TM3_CH3)</li>
@@ -189,21 +182,17 @@
 <a id="user-content-led-indicator" class="anchor" href="#led-indicator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>LED indicator</h4>
 <ul>
 <li>See <a href="https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.md">port_setting.md</a>.</li>
-</ul>
-<ul>
 <li>If set up LED device to "LED indicator port", it will be dimmer during play mode (regular speed) and pause mode (fast speed).</li>
 </ul>
 <h4>
 <a id="user-content-nim-compiler" class="anchor" href="#nim-compiler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nim compiler</h4>
 <ul>
-<li>Recomended nim compiler version is nim-1.6.0 at this time.</li>
+<li>Recomended nim compiler version is nim-1.6.4 at this time.</li>
 </ul>
 <h4>
 <a id="user-content-c-compiler-arm-none-eabi-gcc" class="anchor" href="#c-compiler-arm-none-eabi-gcc" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>C compiler: arm-none-eabi-gcc</h4>
 <ul>
 <li>v4.8.3 or later.</li>
-</ul>
-<ul>
 <li>Recomend <a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm" rel="nofollow">GNU Arm Embedded Toolchain</a>
 </li>
 </ul>
@@ -211,14 +200,14 @@
 <a id="user-content-compiling-source-code" class="anchor" href="#compiling-source-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compiling source code</h4>
 <ul>
 <li>
-<p>Example: (NUCLEO-L152RE board)</p>
-<div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">cd</span> src/L1/l152re/nucleo_l152re
+<p>Example: (NUCLEO-F411RE board)</p>
+<div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">cd</span> src/F4/f401xe/nucleo-f411re
 $ make
 .........................................................
 CC: xprintf
-CC: startup_stm32l152xe
+CC: startup_stm32f411xe
 CC: stdlib_system.nim
-CC: ../stm32l152xe.nim
+CC: ../stm32f401xe.nim
 CC: ../../../lib/reginfo.nim
 CC: ../uart.nim
 CC: ../pwm.nim
@@ -231,18 +220,17 @@ CC: ../../../wave_player_main.nim
 CC: ../../../main.nim
 CC: start.nim
 Hint:  [Link]
-Hint: gc: none<span class="pl-k">;</span> opt: speed<span class="pl-k">;</span> options: -d:danger
-79440 lines<span class="pl-k">;</span> 4.460s<span class="pl-k">;</span> 77.398MiB peakmem<span class="pl-k">;</span> proj: .<span class="pl-cce">\s</span>tart<span class="pl-k">;</span> out: 
+Hint: gc: arc<span class="pl-k">;</span> opt: speed<span class="pl-k">;</span> options: -d:danger
+90709 lines<span class="pl-k">;</span> 11.377s<span class="pl-k">;</span> 96.109MiB peakmem<span class="pl-k">;</span> proj: .<span class="pl-cce">\s</span>tart<span class="pl-k">;</span> out: ...
    text    data     bss     dec     hex filename
-   5656    1096     124    6876    1adc BINHEX<span class="pl-cce">\n</span>ucleo_l152re.elf</pre></div>
-</li>
-</ul>
-<h4>
-<a id="user-content-generated-files-are" class="anchor" href="#generated-files-are" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Generated files are</h4>
-<pre><code>BINHEX/nucleo_l152re.bin  
-BINHEX/nucleo_l152re.hex  
+   4148      16      88    4252    109c BINHEX<span class="pl-cce">\n</span>ucleo_f411re.elf</pre></div>
+<p>Generated files are</p>
+<pre><code>BINHEX/nucleo_f411re.bin  
+BINHEX/nucleo_f411re.hex  
 ...
 </code></pre>
+</li>
+</ul>
 <p>You can just copy the <strong>bin</strong> file to mbed drive,
 or can flash the <strong>hex</strong> file with ST-Link utility.</p>
 <p>If you don't like to compile from source code, you can immediately upload <a href="https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/tree/main/doc/hex">doc/hex/*.hex or *.bin files</a> to flash.</p>
@@ -305,29 +293,41 @@ In spite of less parts, wirings and PCM bit length, it has fairly sound quality.
 </table>
 <h4>
 <a id="user-content-pursue-small-code-size" class="anchor" href="#pursue-small-code-size" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pursue small code size</h4>
-<p>In src/conf_sys.nim,by eliminating some functionalities, the code size can be further reduced.
-For instance, set as follows:<br>
-<strong>UART_INFO*                = false</strong>
-<strong>PWM16BIT*                 = false</strong>  ( set simple less bits mode)<br>
-<strong>DATA_8BIT_SUPPORT*        = false</strong>  ( only support PCM16bit format,neglect PCM8bit format)
-<strong>HAVE_LED_IND_PWM*         = false</strong>  ( eliminate LED indicator function)<br>
-<strong>FS_48KHZ_QUP*             = false</strong>  ( only supoort less than fs=48KHz)<br>
-will result in about:</p>
-<pre><code>text    data     bss     dec     hex filename
-2964       0     104    3068     bfc BUILD/nucleo_l152re.elf
-</code></pre>
-<p>In src/config.nims, uncomment and enable below option,</p>
-<pre><code>--passC:"-flto"  
---passL:"-flto"  
-</code></pre>
-<p>and recompile project,</p>
-<pre><code>make clean
-make
-</code></pre>
+<p>In <code>src/conf_sys.nim</code>,by eliminating some functionalities,<br>
+the code size can be further reduced. For instance, set as follows:</p>
+<table>
+<thead>
+<tr>
+<th>Flags</th>
+<th>Descriptions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UART_INFO*                = false</td>
+<td>Show information through UART</td>
+</tr>
+<tr>
+<td>PWM16BIT*                 = false</td>
+<td>Set simple less bits mode</td>
+</tr>
+<tr>
+<td>DATA_8BIT_SUPPORT*        = false</td>
+<td>Only support PCM16bit format,neglect PCM8bit format</td>
+</tr>
+<tr>
+<td>HAVE_LED_IND_PWM*         = false</td>
+<td>Eliminate LED indicator function</td>
+</tr>
+<tr>
+<td>FS_48KHZ_QUP*             = false</td>
+<td>Only supoort less than fs=48KHz</td>
+</tr>
+</tbody>
+</table>
 <p>will result in about:</p>
-<pre><code>text    data     bss     dec     hex filename
-2916       0     136    3052     bec BUILD/nucleo_l152re.elf
-</code></pre>
+<div class="highlight highlight-source-shell"><pre>text    data     bss     dec     hex filename
+3480      16      80    3576     df8 BINHEX<span class="pl-cce">\n</span>ucleo_f411re.elf</pre></div>
 <p>Now it can do auto playback after power on,<br>
 can operate play,pause and next song with push button,<br>
 be able to play fairly quality sound according to Table 1,
