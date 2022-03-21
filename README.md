@@ -2,14 +2,7 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 - [PCM Wave Player Super Lite with Nim language on STM32 MCUs](#pcm-wave-player-super-lite-with-nim-language-on-stm32-mcus)
-  - [Supported Board](#supported-board)
-    - [NULCEO-F030R8](#nulceo-f030r8)
-    - [NUCLEO-L152RE](#nucleo-l152re)
-    - [NULCEO-F401RE](#nulceo-f401re)
-    - [NULCEO-F411RE](#nulceo-f411re)
-    - [STM32F0Discovery](#stm32f0discovery)
-    - [STM32F3Discovery](#stm32f3discovery)
-    - [STM32F4Discovery](#stm32f4discovery)
+  - [Supported Board/MCU](#supported-boardmcu)
   - [Supported SD card](#supported-sd-card)
   - [Supported PCM Format](#supported-pcm-format)
   - [Defalut action](#defalut-action)
@@ -32,21 +25,15 @@
 
 16bit resolution PWM wave player with SD card, super lite version.
 
-#### Supported Board
+#### Supported Board/MCU
 
-##### [NULCEO-F030R8](https://os.mbed.com/platforms/ST-Nucleo-F030R8/)  
-
-##### [NUCLEO-L152RE](https://os.mbed.com/platforms/ST-Nucleo-L152RE/)  
-
-##### [NULCEO-F401RE](https://os.mbed.com/platforms/ST-Nucleo-F401RE/)  
-
-##### [NULCEO-F411RE](https://os.mbed.com/platforms/ST-Nucleo-F411RE/)  
-
-##### [STM32F0Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f0discovery.html)  
-
-##### [STM32F3Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f3discovery.html)  
-
-##### [STM32F4Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f4discovery.html)  
+* [NULCEO-F030R8](https://os.mbed.com/platforms/ST-Nucleo-F030R8/)  
+- [NUCLEO-L152RE](https://os.mbed.com/platforms/ST-Nucleo-L152RE/)  
+- [NULCEO-F401RE](https://os.mbed.com/platforms/ST-Nucleo-F401RE/)  
+- [NULCEO-F411RE](https://os.mbed.com/platforms/ST-Nucleo-F411RE/)  
+- [STM32F0Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f0discovery.html)  
+- [STM32F3Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f3discovery.html)  
+- [STM32F4Discovery](https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f4discovery.html)  
 
 #### Supported SD card
 
@@ -70,7 +57,7 @@
 
 #### Hardware setting/Schematic: (16bit sound resolution)
 
-* Refer to the file, [port_setting.html](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.html).
+* Refer to the file, [port_setting.txt](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.txt).
 - See folder doc\/*  
 ![](http://mpu.up.seesaa.net/image/16bit-wave-player-output-schema.png)  
 
@@ -114,7 +101,7 @@ Pin side
 
 #### LED indicator
 
-* See [port_setting.html](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.html).
+* See [port_setting.txt](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.txt).
 - If set up LED device to "LED indicator port", it will be dimmer during play mode (regular speed) and pause mode (fast speed).
 
 #### Nim compiler

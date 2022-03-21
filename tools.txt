@@ -1,0 +1,3 @@
+[ arm-none-eabi-gcc (GNU Arm Embedded Toolchain 10.3-2021.10) 10.3.1 20210824 (release) ]
+[ Nim Compiler Version 1.6.0 [Windows: i386] ]
+[ GNU Make 4.3 ]
