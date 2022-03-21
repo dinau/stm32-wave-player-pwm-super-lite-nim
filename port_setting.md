@@ -30,10 +30,10 @@
 
 #### USART2
 
-| Port     | Model     |
-|----------|-----------|
-| PA_2, D1 | USART2_TX |
-| PA_3, D0 | USART2_RX |
+| Port               | Model |
+|--------------------|-------|
+| PA_2, D1 USART2_TX | All   |
+| PA_3, D0 USART2_RX | All   |
 
 #### PWM With TIM3
 
