@@ -1,0 +1,346 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta https-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link
+      href="https://unpkg.com/@primer/css@^16.0.0/dist/primer.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet alternate"
+      href="https://cdn.jsdelivr.net/gh/primer/github-syntax-light@master/lib/github-light.css" id="light-hl">
+    <link rel="stylesheet alternate"
+    href="https://cdn.jsdelivr.net/gh/primer/github-syntax-dark@master/lib/github-dark.css" id="dark-hl">
+
+    <title>PCM Wave Player Super Lite with Nim language on STM32 MCUs</title>
+  </head>
+
+  <body id="markdown-body" data-color-mode="light" data-dark-theme="light">
+    <div
+      class="
+        Box
+        md
+        js-code-block-container
+        Box--responsive
+        container-xl
+        px-3 px-md-4 px-lg-5
+        mt-5
+      "
+      id="content"
+    >
+      <div class="Box-body px-5 pb-5">
+        <div class="d-flex flex-column flex-sm-row-reverse">
+          <div>
+            <button id="theme-button" class="btn" type="button">
+              <span
+                id="theme-icon"
+                class="iconify"
+                data-icon="octicon:sun-16"
+              ></span>
+            </button>
+          </div>
+        </div>
+        <article class="markdown-body entry-content container-lg" itemprop="text">
+            
+
+<ul>
+<li>
+<a href="#user-content-pcm-wave-player-super-lite-with-nim-language-on-stm32-mcus">PCM Wave Player Super Lite with Nim language on STM32 MCUs</a>
+<ul>
+<li><a href="#user-content-supported-boardmcu">Supported Board/MCU</a></li>
+<li><a href="#user-content-supported-sd-card">Supported SD card</a></li>
+<li><a href="#user-content-supported-pcm-format">Supported PCM Format</a></li>
+<li><a href="#user-content-defalut-action">Defalut action</a></li>
+<li><a href="#user-content-hardware-settingschematic-16bit-sound-resolution">Hardware setting/Schematic: (16bit sound resolution)</a></li>
+<li><a href="#user-content-sd-card-connection">SD Card connection</a></li>
+<li><a href="#user-content-pwm-output-port">PWM output port</a></li>
+<li><a href="#user-content-led-indicator">LED indicator</a></li>
+<li><a href="#user-content-nim-compiler">Nim compiler</a></li>
+<li><a href="#user-content-c-compiler-arm-none-eabi-gcc">C compiler: arm-none-eabi-gcc</a></li>
+<li><a href="#user-content-compiling-source-code">Compiling source code</a></li>
+<li><a href="#user-content-generated-files-are">Generated files are</a></li>
+<li><a href="#user-content-output-music-filename--through-uart-port">Output music filename  through UART port</a></li>
+<li><a href="#user-content-simple-less-bits-mode">Simple less bits mode</a></li>
+<li><a href="#user-content-pursue-small-code-size">Pursue small code size</a></li>
+<li><a href="#user-content-other-links">Other links</a></li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="user-content-pcm-wave-player-super-lite-with-nim-language-on-stm32-mcus" class="anchor" href="#pcm-wave-player-super-lite-with-nim-language-on-stm32-mcus" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PCM Wave Player Super Lite with Nim language on STM32 MCUs</h3>
+<p>16bit resolution PWM wave player with SD card, super lite version.</p>
+<h4>
+<a id="user-content-supported-boardmcu" class="anchor" href="#supported-boardmcu" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported Board/MCU</h4>
+<ul>
+<li><a href="https://os.mbed.com/platforms/ST-Nucleo-F030R8/" rel="nofollow">NULCEO-F030R8</a></li>
+</ul>
+<ul>
+<li><a href="https://os.mbed.com/platforms/ST-Nucleo-L152RE/" rel="nofollow">NUCLEO-L152RE</a></li>
+<li><a href="https://os.mbed.com/platforms/ST-Nucleo-F401RE/" rel="nofollow">NULCEO-F401RE</a></li>
+<li><a href="https://os.mbed.com/platforms/ST-Nucleo-F411RE/" rel="nofollow">NULCEO-F411RE</a></li>
+<li><a href="https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f0discovery.html" rel="nofollow">STM32F0Discovery</a></li>
+<li><a href="https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f3discovery.html" rel="nofollow">STM32F3Discovery</a></li>
+<li><a href="https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f4discovery.html" rel="nofollow">STM32F4Discovery</a></li>
+</ul>
+<h4>
+<a id="user-content-supported-sd-card" class="anchor" href="#supported-sd-card" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported SD card</h4>
+<ul>
+<li>SDSC/SDHC card, FAT16 and FAT32.
+<ol>
+<li>At first, format SD card with <a href="https://www.sdcard.org/downloads/formatter_4/index.html" rel="nofollow">SD Card Formatter</a>
+</li>
+<li>Copy PCM wav files to the SD card on the root directory.</li>
+</ol>
+</li>
+</ul>
+<h4>
+<a id="user-content-supported-pcm-format" class="anchor" href="#supported-pcm-format" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported PCM Format</h4>
+<ul>
+<li>PCM wav file that have file extension ".wav" on root directory.</li>
+</ul>
+<ul>
+<li>16bit/8bit, fs(sampling rate)=32kHz,44.1kHz,48kHz.</li>
+<li>Stereo/Mono.</li>
+</ul>
+<h4>
+<a id="user-content-defalut-action" class="anchor" href="#defalut-action" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Defalut action</h4>
+<ul>
+<li>Afer power on, loop playback automatically and infinitly.</li>
+<li>
+<strong>USER_BUTTON on board operation</strong>: (PC_13 or PA0)
+<ul>
+<li>
+<em>Next song</em>: One click in Play mode.</li>
+<li>
+<em>Pause</em> : Push long time .</li>
+<li>
+<em>Play</em> : One click from Pause.</li>
+</ul>
+</li>
+</ul>
+<h4>
+<a id="user-content-hardware-settingschematic-16bit-sound-resolution" class="anchor" href="#hardware-settingschematic-16bit-sound-resolution" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Hardware setting/Schematic: (16bit sound resolution)</h4>
+<ul>
+<li>Refer to the file, <a href="https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.txt">port_setting.txt</a>.</li>
+</ul>
+<ul>
+<li>See folder doc/*<br>
+<p><img src="http://mpu.up.seesaa.net/image/16bit-wave-player-output-schema.png"></p></li>
+</ul>
+<h4>
+<a id="user-content-sd-card-connection" class="anchor" href="#sd-card-connection" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SD Card connection</h4>
+<div class="highlight highlight-text-shell-session"><pre><span class="pl-c1">Pin side</span>
+<span class="pl-c1"> --------------.</span>
+<span class="pl-c1">         9     = \    DAT2/NC</span>
+<span class="pl-c1">             1 ===|   CS/DAT3    [CS]</span>
+<span class="pl-c1">             2 ===|   CMD/DI     [DI]</span>
+<span class="pl-c1">             3 ===|   VSS1</span>
+<span class="pl-c1"> Bottom      4 ===|   VDD</span>
+<span class="pl-c1"> View        5 ===|   CLK        [CLK]</span>
+<span class="pl-c1">             6 ===|   VSS2</span>
+<span class="pl-c1">             7 ===|   DO/DAT0    [DO]</span>
+<span class="pl-c1">         8       =|   DAT1/IRQ</span>
+<span class="pl-c1"> -----------------'</span>
+
+<span class="pl-c1">                                         Arduino      NUCLEO-F411       NUCLEO-F030R8</span>
+<span class="pl-c1"> Logo side</span>
+<span class="pl-c1"> -----------------.</span>
+<span class="pl-c1">         8       =|   DAT1/IRQ</span>
+<span class="pl-c1">             7 ===|   DO/DAT0    [DO]     D12           D12/PA_6           D12/PA_6</span>
+<span class="pl-c1">             6 ===|   VSS2</span>
+<span class="pl-c1"> Top         5 ===|   CLK        [CLK]    D13           D13/PA_5           D13/PA_5</span>
+<span class="pl-c1"> View        4 ===|   VDD</span>
+<span class="pl-c1">             3 ===|   VSS1</span>
+<span class="pl-c1">             2 ===|   CMD/DI     [DI]     D11           D11/PA_7           D11/PA_7</span>
+<span class="pl-c1">             1 ===|   CS/DAT3    [CS]     D8            D10/PB_6           D10/PB_6</span>
+<span class="pl-c1">         9     = /    DAT2/NC</span>
+<span class="pl-c1"> ---------------'</span></pre></div>
+<h4>
+<a id="user-content-pwm-output-port" class="anchor" href="#pwm-output-port" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PWM output port</h4>
+<ul>
+<li>Left  upper(Hi)  PWM 8bit out: PB_5 (TM3_CH2)</li>
+</ul>
+<ul>
+<li>Right upper(Hi)  PWM 8bit out: PB4  (TM3_CH1)</li>
+<li>Left  lower(Low) PWM 8bit out: PC_9 (TM3_CH4)</li>
+<li>Right lower(Low) PWM 8bit out: PC_8 (TM3_CH3)</li>
+</ul>
+<h4>
+<a id="user-content-led-indicator" class="anchor" href="#led-indicator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>LED indicator</h4>
+<ul>
+<li>See <a href="https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.txt">port_setting.txt</a>.</li>
+</ul>
+<ul>
+<li>If set up LED device to "LED indicator port", it will be dimmer during play mode (regular speed) and pause mode (fast speed).</li>
+</ul>
+<h4>
+<a id="user-content-nim-compiler" class="anchor" href="#nim-compiler" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Nim compiler</h4>
+<ul>
+<li>Recomended nim compiler version is nim-1.6.0 at this time.</li>
+</ul>
+<h4>
+<a id="user-content-c-compiler-arm-none-eabi-gcc" class="anchor" href="#c-compiler-arm-none-eabi-gcc" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>C compiler: arm-none-eabi-gcc</h4>
+<ul>
+<li>v4.8.3 or later.</li>
+</ul>
+<ul>
+<li>Recomend <a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm" rel="nofollow">GNU Arm Embedded Toolchain</a>
+</li>
+</ul>
+<h4>
+<a id="user-content-compiling-source-code" class="anchor" href="#compiling-source-code" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Compiling source code</h4>
+<ul>
+<li>
+<p>Example: (NUCLEO-L152RE board)</p>
+<div class="highlight highlight-source-shell"><pre>$ <span class="pl-c1">cd</span> src/L1/l152re/nucleo_l152re
+$ make
+.........................................................
+CC: xprintf
+CC: startup_stm32l152xe
+CC: stdlib_system.nim
+CC: ../stm32l152xe.nim
+CC: ../../../lib/reginfo.nim
+CC: ../uart.nim
+CC: ../pwm.nim
+CC: board.nim
+CC: ../spi.nim
+CC: ../../../lib/systick.nim
+CC: ../../../lib/sd_card.nim
+CC: ../../../lib/fat_lib.nim
+CC: ../../../wave_player_main.nim
+CC: ../../../main.nim
+CC: start.nim
+Hint:  [Link]
+Hint: gc: none<span class="pl-k">;</span> opt: speed<span class="pl-k">;</span> options: -d:danger
+79440 lines<span class="pl-k">;</span> 4.460s<span class="pl-k">;</span> 77.398MiB peakmem<span class="pl-k">;</span> proj: .<span class="pl-cce">\s</span>tart<span class="pl-k">;</span> out: 
+   text    data     bss     dec     hex filename
+   5656    1096     124    6876    1adc BINHEX<span class="pl-cce">\n</span>ucleo_l152re.elf</pre></div>
+</li>
+</ul>
+<h4>
+<a id="user-content-generated-files-are" class="anchor" href="#generated-files-are" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Generated files are</h4>
+<pre><code>BINHEX/nucleo_l152re.bin  
+BINHEX/nucleo_l152re.hex  
+...
+</code></pre>
+<p>You can just copy the <strong>bin</strong> file to mbed drive,
+or can flash the <strong>hex</strong> file with ST-Link utility.</p>
+<p>If you don't like to compile from source code, you can immediately upload <a href="https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/tree/main/doc/hex">doc/hex/*.hex or *.bin files</a> to flash.</p>
+<h4>
+<a id="user-content-output-music-filename--through-uart-port" class="anchor" href="#output-music-filename--through-uart-port" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Output music filename  through UART port</h4>
+<p>By default music filename is send through default UART(USB-CDC(Nucleo boards)) port.
+Baudrate is <strong>115200bps</strong>.<br>
+<p><img src="http://mpu.up.seesaa.net/image/filename-to-uart-port.png"></p>If you don't need UART output feature, set <strong>UART_INFO* = false</strong> in <a href="https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/src/conf_sys.nim">src/conf_sys.nim</a> and<br>
+recompile the project.</p>
+<h4>
+<a id="user-content-simple-less-bits-mode" class="anchor" href="#simple-less-bits-mode" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Simple less bits mode</h4>
+<p>If set <strong>PWM16BIT* = false</strong> in src/conf_sys.nim and recompile the project, <strong>simple less bits mode</strong> is enabled.<br>
+In spite of less parts, wirings and PCM bit length, it has fairly sound quality.
+<p><img src="http://mpu.up.seesaa.net/image/less-bits-wave-player-output-schema.png"></p><p><strong>Table 1.</strong> Sound resolution in <strong>simple less bits mode</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">Board</th>
+<th align="right">Sound resolution</th>
+<th align="right">TIM_PWM_BASE_CLOCK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">nulceo_f030r8</td>
+<td align="right">10bit</td>
+<td align="right">48MHz</td>
+</tr>
+<tr>
+<td align="left">nucleo_l152re</td>
+<td align="right">9bit</td>
+<td align="right">32MHz</td>
+</tr>
+<tr>
+<td align="left">nulceo_f401re</td>
+<td align="right">10bit</td>
+<td align="right">84MHz</td>
+</tr>
+<tr>
+<td align="left">nulceo_f411re</td>
+<td align="right"><strong>11bit</strong></td>
+<td align="right">96MHz</td>
+</tr>
+<tr>
+<td align="left">STM32F0Discovery</td>
+<td align="right">10bit</td>
+<td align="right">48MHz</td>
+</tr>
+<tr>
+<td align="left">STM32F3Discovery</td>
+<td align="right">10bit</td>
+<td align="right">64MHz</td>
+</tr>
+<tr>
+<td align="left">STM32F4Discovery</td>
+<td align="right">10bit</td>
+<td align="right">84MHz</td>
+</tr>
+</tbody>
+</table>
+<h4>
+<a id="user-content-pursue-small-code-size" class="anchor" href="#pursue-small-code-size" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Pursue small code size</h4>
+<p>In src/conf_sys.nim,by eliminating some functionalities, the code size can be further reduced.
+For instance, set as follows:<br>
+<strong>UART_INFO*                = false</strong>
+<strong>PWM16BIT*                 = false</strong>  ( set simple less bits mode)<br>
+<strong>DATA_8BIT_SUPPORT*        = false</strong>  ( only support PCM16bit format,neglect PCM8bit format)
+<strong>HAVE_LED_IND_PWM*         = false</strong>  ( eliminate LED indicator function)<br>
+<strong>FS_48KHZ_QUP*             = false</strong>  ( only supoort less than fs=48KHz)<br>
+will result in about:</p>
+<pre><code>text    data     bss     dec     hex filename
+2964       0     104    3068     bfc BUILD/nucleo_l152re.elf
+</code></pre>
+<p>In src/config.nims, uncomment and enable below option,</p>
+<pre><code>--passC:"-flto"  
+--passL:"-flto"  
+</code></pre>
+<p>and recompile project,</p>
+<pre><code>make clean
+make
+</code></pre>
+<p>will result in about:</p>
+<pre><code>text    data     bss     dec     hex filename
+2916       0     136    3052     bec BUILD/nucleo_l152re.elf
+</code></pre>
+<p>Now it can do auto playback after power on,<br>
+can operate play,pause and next song with push button,<br>
+be able to play fairly quality sound according to Table 1,
+can recognize PCM 16bit wav file(but output quality is reduced accoding to Table 1. and supports stereo/mono, fs=32KHz,44.1KHz.</p>
+<h4>
+<a id="user-content-other-links" class="anchor" href="#other-links" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Other links</h4>
+<ul>
+<li>Wave player projectm, Super lite series
+<ul>
+<li>Nim language
+<ul>
+<li>
+<a href="https://github.com/dinau/arduino-wave-player-pwm-super-lite-nim">Arduino Wave Player PWM Super Lite Nim / Nim</a> Completed.</li>
+</ul>
+</li>
+<li>Mbed2 C/C++ language
+<ul>
+<li>
+<a href="https://os.mbed.com/users/mimi3/code/wave_player_super_lite" rel="nofollow">Wave Player Super Lite / STM32(F0,L1,F4) / Mbed2 / C++</a> Completed.</li>
+</ul>
+</li>
+<li>Jal language
+<ul>
+<li><a href="https://github.com/dinau/16f-wave-player-pwm-super-lite-jalv2">Pwm Wave Player Jalv2 / PIC16F1xxx / Jal</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </article>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/calganaygun/MDcat@main/theme.js"></script>
+    <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+  </body>
+</html>

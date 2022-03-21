@@ -1,0 +1,249 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd">
+<html><head>
+<meta https-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link
+      href="https://unpkg.com/@primer/css@^16.0.0/dist/primer.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet alternate"
+      href="https://cdn.jsdelivr.net/gh/primer/github-syntax-light@master/lib/github-light.css" id="light-hl">
+    <link rel="stylesheet alternate"
+    href="https://cdn.jsdelivr.net/gh/primer/github-syntax-dark@master/lib/github-dark.css" id="dark-hl">
+
+    <title>Port definition </title>
+  </head>
+
+  <body id="markdown-body" data-color-mode="light" data-dark-theme="light">
+    <div
+      class="
+        Box
+        md
+        js-code-block-container
+        Box--responsive
+        container-xl
+        px-3 px-md-4 px-lg-5
+        mt-5
+      "
+      id="content"
+    >
+      <div class="Box-body px-5 pb-5">
+        <div class="d-flex flex-column flex-sm-row-reverse">
+          <div>
+            <button id="theme-button" class="btn" type="button">
+              <span
+                id="theme-icon"
+                class="iconify"
+                data-icon="octicon:sun-16"
+              ></span>
+            </button>
+          </div>
+        </div>
+        <article class="markdown-body entry-content container-lg" itemprop="text">
+            
+
+<ul>
+<li>
+<a href="#user-content-port-definition">Port definition</a>
+<ul>
+<li><a href="#user-content-push-button-sw-on-board">Push Button SW (on board)</a></li>
+<li><a href="#user-content-led-indicator">LED indicator</a></li>
+<li><a href="#user-content-usart2">USART2</a></li>
+<li><a href="#user-content-pwm-with-tim3">PWM With TIM3</a></li>
+<li><a href="#user-content-spi1">SPI1</a></li>
+<li><a href="#user-content-test_port">TEST_PORT</a></li>
+</ul>
+</li>
+</ul>
+
+<h3>
+<a id="user-content-port-definition" class="anchor" href="#port-definition" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Port definition</h3>
+<h4>
+<a id="user-content-push-button-sw-on-board" class="anchor" href="#push-button-sw-on-board" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Push Button SW (on board)</h4>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PA_0 (Hi active)</td>
+<td>STM32F0Discovery, STM32F3Discovery, STM32F4Discovery</td>
+</tr>
+<tr>
+<td>PC_13 (Low active)</td>
+<td>Others</td>
+</tr>
+</tbody>
+</table>
+<h4>
+<a id="user-content-led-indicator" class="anchor" href="#led-indicator" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>LED indicator</h4>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PE_11 (on board LED green,LD7)</td>
+<td>STM32F3Discovery</td>
+</tr>
+<tr>
+<td>PD_12 (on board LED green,LD4)</td>
+<td>STM32F4Discovery</td>
+</tr>
+<tr>
+<td>PB_10, D6</td>
+<td>Others</td>
+</tr>
+</tbody>
+</table>
+<h4>
+<a id="user-content-usart2" class="anchor" href="#usart2" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>USART2</h4>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PA_2, D1</td>
+<td>USART2_TX</td>
+</tr>
+<tr>
+<td>PA_3, D0</td>
+<td>USART2_RX</td>
+</tr>
+</tbody>
+</table>
+<h4>
+<a id="user-content-pwm-with-tim3" class="anchor" href="#pwm-with-tim3" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>PWM With TIM3</h4>
+<ul>
+<li>
+<p>Use PWM3-1, PWM3-2 on TIM3<br>
+Higher 8bit</p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PB_5, D4  PWM_PORT_LEFT_HI    (TIM3_CH2)</td>
+<td>All</td>
+</tr>
+<tr>
+<td>PB_4, D5  PWM_PORT_RIGHT_HI   (TIM3_CH1)</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Use PWM3-3,PWM3-4 with TIM3<br>
+Lower 8bit</p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PC_9, -  PWM_PORT_LEFT_LOW    (TIM3_CH4)</td>
+<td>All</td>
+</tr>
+<tr>
+<td>PC_8, -  PWM_PORT_RIGHT_LOW   (TIM3_CH3)</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h4>
+<a id="user-content-spi1" class="anchor" href="#spi1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>SPI1</h4>
+<ul>
+<li>
+<p>Chip select port (CS)</p>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PB_8</td>
+<td>STM32F3Discovery, STM32F4Discovery</td>
+</tr>
+<tr>
+<td>PB_6, D10</td>
+<td>Others</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>Other</p>
+<table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SCK</td>
+<td>PA_5, D13</td>
+<td>All</td>
+</tr>
+<tr>
+<td>MISO</td>
+<td>PA_6, D12</td>
+<td>All</td>
+</tr>
+<tr>
+<td>MOSI</td>
+<td>PA_7, D11</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ul>
+<h4>
+<a id="user-content-test_port" class="anchor" href="#test_port" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>TEST_PORT</h4>
+<table>
+<thead>
+<tr>
+<th>Port</th>
+<th>Model</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PA_8, D7</td>
+<td>All</td>
+</tr>
+</tbody>
+</table>
+
+        </article>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/gh/calganaygun/MDcat@main/theme.js"></script>
+    <script src="https://code.iconify.design/2/2.0.3/iconify.min.js"></script>
+  </body>
+</html>
