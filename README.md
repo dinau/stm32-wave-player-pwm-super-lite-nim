@@ -70,7 +70,7 @@
 
 #### Hardware setting/Schematic: (16bit sound resolution)
 
-* Refer to the file, [port_setting.html](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.html).
+* Refer to the file, [port_setting.md](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.md).
 - See folder doc\/*  
 ![](http://mpu.up.seesaa.net/image/16bit-wave-player-output-schema.png)  
 
@@ -114,7 +114,7 @@ Pin side
 
 #### LED indicator
 
-* See [port_setting.html](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.html).
+* See [port_setting.md](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.md).
 - If set up LED device to "LED indicator port", it will be dimmer during play mode (regular speed) and pause mode (fast speed).
 
 #### Nim compiler
@@ -236,3 +236,4 @@ can recognize PCM 16bit wav file(but output quality is reduced accoding to Table
     - [Wave Player Super Lite / STM32(F0,L1,F4) / Mbed2 / C++](https://os.mbed.com/users/mimi3/code/wave_player_super_lite) Completed.
   - Jal language
     - [Pwm Wave Player Jalv2 / PIC16F1xxx / Jal](https://github.com/dinau/16f-wave-player-pwm-super-lite-jalv2)
+
