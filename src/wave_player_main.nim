@@ -1,6 +1,6 @@
 import conf_sys
-import sd_card,fat_lib,systick
-import pwm,gpio,spi,board
+import sd_card, fat_lib, systick
+import pwm, gpio, spi, board
 
 # *******************************
 #  external referenced functions
@@ -10,13 +10,13 @@ import pwm,gpio,spi,board
 # *******************************
 #  forward definitiion
 # *******************************
-proc calcPcmValidBits(fs:dword):uint8 {.inline.}
+proc calcPcmValidBits(fs: dword): uint8 {.inline.}
 
 # *******************************
 # local template
 # *******************************
 when HAVE_LED_IND_PWM:
-    template ind_on()  = led(1)
+    template ind_on() = led(1)
     template ind_off() = led(0)
 template music_stop() =
     pwm_period_timer_intr_stop()
@@ -27,24 +27,24 @@ template music_start() =
 
 ##################################
 const
-    bCH_STEREO      = 2    # CH_MONO:1
-    wREAD_COUNT     = 512
-    bHEADER_COUNT   = 44
+    bCH_STEREO = 2 # CH_MONO:1
+    wREAD_COUNT = 512
+    bHEADER_COUNT = 44
 var
-    lbSample_bits   = 8.byte
-    ldwSample_freq  = 44100.dword
-    lbCh_mode:byte  = bCH_STEREO
-    lwReadCount     = wREAD_COUNT
-    fPlaying:bool
-    ldwSongFileSectors:dword
-    bGainNormalizeFactor:uint8
+    lbSample_bits = 8.byte
+    ldwSample_freq = 44100.dword
+    lbCh_mode: byte = bCH_STEREO
+    lwReadCount = wREAD_COUNT
+    fPlaying: bool
+    ldwSongFileSectors: dword
+    bGainNormalizeFactor: uint8
 when not PWM16BIT:
-    var bPCM_SHIFT_NUM:uint8
+    var bPCM_SHIFT_NUM: uint8
 
 #################################
 # TIM3_IRQHandler
 #################################
-{.emit:"""
+{.emit: """
 #pragma GCC Push_options
 #pragma GCC optimize ("O3")
 """.}
@@ -54,79 +54,80 @@ proc TIM3_IRQHandler {.exportc.} =
         when TEST_PORT_ENABLE: test_on()
 
         when PWM16BIT:
-            var bL_low,bL_hi,bR_low,bR_hi:byte
+            var bL_low, bL_hi, bR_low, bR_hi: byte
             if lbSample_bits == 16:
                 bL_low = send_ff()
-                bL_hi  = send_ff() + 0x80'u8
+                bL_hi = send_ff() + 0x80'u8
                 # copy for mono
                 bR_low = bL_low
-                bR_hi  = bL_hi
+                bR_hi = bL_hi
                 lwReadCount -= 2
                 if lbCh_mode == bCH_STEREO:
                     bR_low = send_ff()
-                    bR_hi  = send_ff() + 0x80'u8
+                    bR_hi = send_ff() + 0x80'u8
                     lwReadCount -= 2
-            else:#/* 8bit data */
+            else: #/* 8bit data */
                 when DATA_8BIT_SUPPORT:
-                    bL_low= 0
-                    bR_low= 0
+                    bL_low = 0
+                    bR_low = 0
                     bL_hi = send_ff()
                     # copy for mono
                     bR_hi = bL_hi
                     lwReadCount -= 1
-                    if lbCh_mode == bCH_STEREO:#/* for stereo */
+                    if lbCh_mode == bCH_STEREO: #/* for stereo */
                         bR_hi = send_ff()
                         lwReadCount -= 1
             # Gain up
-            var dwL:dword = (bL_hi.word shl 8 ) or  bL_low
+            var dwL: dword = (bL_hi.word shl 8) or bL_low
             dwL = dwL shl bGainNormalizeFactor
-            var dwR:dword = (bR_hi.word shl 8 )  or  bR_low
+            var dwR: dword = (bR_hi.word shl 8) or bR_low
             dwR = dwR shl bGainNormalizeFactor
 
             # change pwm duties
-            pwm_dutyL_hi(  dwL shr 8  )
-            pwm_dutyL_low( dwL and 0xff)
-            pwm_dutyR_hi(  dwR shr 8)
-            pwm_dutyR_low( dwR and 0xff)
+            pwm_dutyL_hi(dwL shr 8)
+            pwm_dutyL_low(dwL and 0xff)
+            pwm_dutyR_hi(dwR shr 8)
+            pwm_dutyR_low(dwR and 0xff)
 
         else: # Not PWM16BIT (pwm: 9bit, 10bit, 11bit)
-            var wL,wR:word
+            var wL, wR: word
             if lbSample_bits == 16:
-                wL = ( send_ff().word + (send_ff().word shl 8) + 0x8000) shr bPCM_SHIFT_NUM
+                wL = (send_ff().word + (send_ff().word shl 8) +
+                        0x8000) shr bPCM_SHIFT_NUM
                 wR = wL
                 lwReadCount -= 2
                 if lbCh_mode == bCH_STEREO:
-                    wR = (send_ff().word + (send_ff().word shl 8) + 0x8000) shr bPCM_SHIFT_NUM
+                    wR = (send_ff().word + (send_ff().word shl 8) +
+                            0x8000) shr bPCM_SHIFT_NUM
                     lwReadCount -= 2
-            else:#/* 8bit data */
+            else: #/* 8bit data */
                 when DATA_8BIT_SUPPORT:
                     wL = send_ff().word shl bGainNormalizeFactor #
                     lwReadCount -= 1
-                    if lbCh_mode == bCH_STEREO:#/* for stereo */
+                    if lbCh_mode == bCH_STEREO: #/* for stereo */
                         wR = send_ff().word shl bGainNormalizeFactor
                         lwReadCount -= 1
             # change  pwm duties
-            pwm_dutyL_hi( wL )
-            pwm_dutyR_hi( wR )
+            pwm_dutyL_hi(wL)
+            pwm_dutyR_hi(wR)
 
         #----------------------------------
         # check boundery of 512byte sector
         #----------------------------------
-        if lwReadCount == 0:   #//; end one sector
-            var bDummy :byte
+        if lwReadCount == 0: #//; end one sector
+            var bDummy: byte
             bDummy = send_ff() #// dummy read. discard CRC
             bDummy = send_ff() # 2nd dummy read.
             lwReadCount = wREAD_COUNT
             ldwSongFileSectors -= 1
-            while send_ff() != 0xFE:discard
+            while send_ff() != 0xFE: discard
             if ldwSongFileSectors == 0:
                 music_stop()
 
     when TEST_PORT_ENABLE: test_off()
-    # end interruput
     clear_pwm_period_timer_intr_if()
     # end interruput
-{.emit:"""
+{.emit: """
 #pragma GCC Pop_options
 """.}
 
@@ -136,24 +137,24 @@ proc TIM3_IRQHandler {.exportc.} =
 # ***********************
 when HAVE_LED_IND_BLINK:
     const
-        LED_PERIOD_PLAYNG  = 75
+        LED_PERIOD_PLAYNG = 75
         LED_PERIOD_PAUSING = 10
 
 # *****************
 #  wave_player_main
 # *****************
 template fbtn_next_song_on: untyped = fbtn_short_on
-template fbtn_pause_on:     untyped = fbtn_long_on
+template fbtn_pause_on: untyped = fbtn_long_on
 
 proc wave_player_main*() {.inline.} =
     when HAVE_LED_IND_BLINK:
         var bTimeout_led: byte
     var
-        swBtnLowCount  :sword
-        fbtn_bit_prev  :sbit = true
-        fbtn_short_on  :sbit = false
-        fbtn_long_on   :sbit = false
-        fbtn_pause_prev:sbit = false
+        swBtnLowCount: sword
+        fbtn_bit_prev: sbit = true
+        fbtn_short_on: sbit = false
+        fbtn_long_on: sbit = false
+        fbtn_pause_prev: sbit = false
 
     when HAVE_POWER_OFF_MODE:
         fbtn_long_on2 = false
@@ -161,20 +162,20 @@ proc wave_player_main*() {.inline.} =
 
     when HAVE_LED_IND_PWM: #  pseudo PWM setting
         const
-            IND_PERIOD         = 125.int8
+            IND_PERIOD = 125.int8
             IND_DUTY_LOW_SPEED = 1.int8
-            IND_DUTY_HI_SPEED  = 3.int8
+            IND_DUTY_HI_SPEED = 3.int8
         var
-            sbIndDuty    = 0.int8
+            sbIndDuty = 0.int8
             sbIndCurrPos = 0.int8
-            sbIndSpeed   = IND_DUTY_LOW_SPEED
-            sbIndDelta   = sbIndSpeed
+            sbIndSpeed = IND_DUTY_LOW_SPEED
+            sbIndDelta = sbIndSpeed
 
     while true:
         var prev = getTickCounter()
         while getTickCounter() < prev + 10: # ; wait 10msec
-            if ldwSongFileSectors == 0:     # ; found end of file
-                break                       # : promptly exit and prepare next song
+            if ldwSongFileSectors == 0: # ; found end of file
+                break # : promptly exit and prepare next song
             when HAVE_LED_IND_PWM:
                 # ---------------------
                 # pseudo PWM for LED
@@ -210,30 +211,33 @@ proc wave_player_main*() {.inline.} =
             # ------------------
             # Delete music tag data in end of wav file.
             # Music tag data size assumes about CUT_LAST_TAG_NOISE bytes at this moment.
-            ldwSongFileSectors = (getBPB_FileSize() - CUT_LAST_TAG_NOISE.dword) shr 9 # convert to sectors
+            ldwSongFileSectors = (getBPB_FileSize() -
+                    CUT_LAST_TAG_NOISE.dword) shr 9 # convert to sectors
 
             when TOP_LEVEL_INFO:
-                xprintf("\n getBPB_FileSize()=%d",getBPB_FileSize())
-                xprintf("\n ldwSongFileSectors=%d",ldwsongFileSectors)
+                xprintf("\n getBPB_FileSize()=%d", getBPB_FileSize())
+                xprintf("\n ldwSongFileSectors=%d", ldwsongFileSectors)
 
             # ------------------
             # Get wav header info
             # ------------------
             when READ_WAV_HEADER_INFO:
-                sd_read_pulse_byte(22)    # pos(22) skip to channel info
-                lbCh_mode = sd_data_byte()# pos(23)
-                sd_data_byte()            # pos(24) skip to sampling freq.
+                sd_read_pulse_byte(22) # pos(22) skip to channel info
+                lbCh_mode = sd_data_byte() # pos(23)
+                sd_data_byte() # pos(24) skip to sampling freq.
                 ldwSample_freq = sd_data_byte().dword + (sd_data_byte().dword shl 8) +
-                                                        (sd_data_byte().dword shl 16) +
+                                                        (sd_data_byte(
+                                                                ).dword shl 16) +
                                                         (sd_data_byte().dword shl 24) # pos(28)
-                sd_read_pulse_byte(6)         # pos(34) skip to sample bits
-                lbSample_bits = sd_data_byte()# pos(35)
-                sd_read_pulse_byte(9)         # pos(44) skip to last position of header
+                sd_read_pulse_byte(6) # pos(34) skip to sample bits
+                lbSample_bits = sd_data_byte() # pos(35)
+                sd_read_pulse_byte(9) # pos(44) skip to last position of header
 
                 when TOP_LEVEL_INFO:
-                    xprintf("\n gCh_mod = %d, ldwSample_freq = %d, lbSample_bits = %d",lbCh_mode ,ldwSample_freq,lbSample_bits)
+                    xprintf("\n gCh_mod = %d, ldwSample_freq = %d, lbSample_bits = %d",
+                            lbCh_mode, ldwSample_freq, lbSample_bits)
             else:
-                sd_read_pulse_byte(44)    # pos(44) just skip all wav header
+                sd_read_pulse_byte(44) # pos(44) just skip all wav header
 
             # ------------------
             # Set sampling frequency
@@ -242,11 +246,11 @@ proc wave_player_main*() {.inline.} =
             when PWM16BIT:
                 bGainNormalizeFactor = calcPcmValidBits(ldwSample_freq) - 8'u8
                 when TOP_LEVEL_INFO:
-                    xprintf("\n bGainNormalizeFactor = %u",bGainNormalizeFactor)
+                    xprintf("\n bGainNormalizeFactor = %u", bGainNormalizeFactor)
             else:
-                bPCM_SHIFT_NUM  = 16'u8 - calcPcmValidBits(ldwSample_freq)
+                bPCM_SHIFT_NUM = 16'u8 - calcPcmValidBits(ldwSample_freq)
                 when TOP_LEVEL_INFO:
-                    xprintf("\n bPCM_SHIFT_NUM = %u",bPCM_SHIFT_NUM)
+                    xprintf("\n bPCM_SHIFT_NUM = %u", bPCM_SHIFT_NUM)
 
             # ------------------
             # Music start
@@ -263,9 +267,9 @@ proc wave_player_main*() {.inline.} =
         when HAVE_LED_IND_PWM:
             sbIndDuty += sbIndDelta
             if sbIndDuty > IND_PERIOD: sbIndDelta = -1 * sbIndSpeed
-            if sbIndDuty == 0:         sbIndDelta =      sbIndSpeed
+            if sbIndDuty == 0: sbIndDelta = sbIndSpeed
             if fPlaying: sbIndSpeed = IND_DUTY_LOW_SPEED
-            else:          sbIndSpeed = IND_DUTY_HI_SPEED
+            else: sbIndSpeed = IND_DUTY_HI_SPEED
         # -------------------
         # LED indicator 2 --- simple ON/OFF
         # -------------------
@@ -322,10 +326,10 @@ proc wave_player_main*() {.inline.} =
 
 
 #[/* WAVE signal effective bits
- * if fs==44.1kHz then:
- * PCM_SIGNIFICANT_BITS = int[ log_2[ (PERIOD_TIMER_INPUT_CLK / 44100 ) ] ]
- */]#
-proc calcPcmValidBits(fs:dword):uint8 =
+    * if fs==44.1kHz then:
+    * PCM_SIGNIFICANT_BITS = int[ log_2[ (PERIOD_TIMER_INPUT_CLK / 44100 ) ] ]
+    */]#
+proc calcPcmValidBits(fs: dword): uint8 =
     result = 8
     when FS_48KHZ_QUP:
         if fs >= 48_000.dword:

@@ -6,5 +6,5 @@ all:
 	@arm-none-eabi-objdump -hdC BINHEX/$(TARGET).elf > BINHEX/$(TARGET).lst2
 clean:
 	@nim clean
-w: all
+w:
 	@nim w

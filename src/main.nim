@@ -3,7 +3,7 @@
 import conf_sys
 import reginfo
 import system, uart, pwm, gpio, spi, board
-import sd_card,wave_player_main, fat_lib
+import sd_card, wave_player_main, fat_lib
 import systick
 #[ /* SD card pin
  Pin side
@@ -35,9 +35,9 @@ import systick
  */
 ]#
 
-# Peripheral map:  See "port_setting.txt"
+# Peripheral map:  See "../port_setting.md"
 #
-{.compile:"xprintf.c".}
+{.compile: "xprintf.c".}
 
 ##################
 # main function
@@ -47,22 +47,17 @@ proc main*() =
     initSysclock()
     initGPIO()
     initBoard()
-   # Start systick timer and interrupt
+    # Start systick timer and interrupt
     SysTick_Config(SYSTEM_CLOCK div 1000) # 1msec (1000Hz)
     when UART_INFO:
-        initSerial(USART2)                # 115200bps
-    initSPI(SPI1)                         #
-    initPwm()                             # Period fs=44.1kHz
-    regInfo()                             # Display MCU registor values.
+        initSerial(USART2) # 115200bps
+    initSPI(SPI1) #
+    initPwm() # Period fs=44.1kHz
+    regInfo() # Display MCU registor values.
     # SDSC,SDHC initialize
-    while sd_init()==false:
+    while sd_init() == false:
         wait_ms(1000)
-    FAT_init()                            # Accept FAT16 and FAT32
-    regInfo()                             # 2nd
-    wave_player_main()                    #
-
-
-
-
-
+    FAT_init() # Accept FAT16 and FAT32
+    regInfo() # 2nd
+    wave_player_main() #
 
