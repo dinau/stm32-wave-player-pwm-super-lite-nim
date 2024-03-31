@@ -5,7 +5,7 @@
   - [Supported Board/MCU](#supported-boardmcu)
   - [Supported SD card](#supported-sd-card)
   - [Supported PCM Format](#supported-pcm-format)
-  - [Defalut action](#defalut-action)
+  - [Default action](#default-action)
   - [Hardware setting/Schematic: (16bit sound resolution)](#hardware-settingschematic-16bit-sound-resolution)
   - [SD Card connection](#sd-card-connection)
   - [PWM output port](#pwm-output-port)
@@ -22,15 +22,25 @@
 
 ### PCM Wave Player Super Lite with Nim language on STM32 MCUs
 
+---
+
 16bit resolution PWM wave player with SD card, super lite version.
+
+
+
+<a href="https://audionautix.com/">Music by Audionautix.com</a>
 
 #### Supported Board/MCU
 
-| STM32F0                       | STM32L1                      | STM32F3                      | STM32F4                      |
-| ----------------------------- | ---------------------------- | ---------------------------- | ---------------------------- |
-| [NULCEO-F030R8][lk_f030r8]    | [NUCLEO-L152RE][lk_l152re]   | [STM32F3Discovery][lk_f3_d]  | [NULCEO-F401RE][lk_f401re]   |
-| [STM32F0Discovery][lk_f0_d]   |                              |                              | [NULCEO-F411RE][lk_f411re]   |
-|                               |                              |                              | [STM32F4Discovery][lk_f4_d]  |
+---
+
+| MCU     | Boards                                                        |
+| :---:   | :---:                                                         |
+| STM32F0 | [NULCEO-F030R8][lk_f030r8] <br>   [STM32F0Discovery][lk_f0_d] |
+| STM32L1 | [NUCLEO-L152RE][lk_l152re]                                    |
+| STM32F3 | [STM32F3Discovery][lk_f3_d]                                   |
+| STM32F4 | [NULCEO-F401RE][lk_f401re]   <br> [NULCEO-F411RE][lk_f411re]  |
+
 
 [lk_f030r8]:https://os.mbed.com/platforms/ST-Nucleo-F030R8/
 [lk_f0_d]:https://www.st.com/content/st_com/en/products/evaluation-tools/product-evaluation-tools/mcu-mpu-eval-tools/stm32-mcu-mpu-eval-tools/stm32-discovery-kits/stm32f0discovery.html
@@ -42,17 +52,23 @@
 
 #### Supported SD card
 
+---
+
 - SDSC/SDHC card, FAT16 and FAT32.  
   1. At first, format SD card with [SD Card Formatter](https://www.sdcard.org/downloads/formatter_4/index.html)
   1. Copy PCM wav files to the SD card on the root directory.  
 
 #### Supported PCM Format
 
+---
+
 - PCM wav file that have file extension ".wav" on root directory.  
 - 16bit/8bit, fs(sampling rate)=32kHz,44.1kHz,48kHz.  
 - Stereo/Mono.
 
-#### Defalut action
+#### Default action
+
+---
 
 - After power on, loop playback automatically and infinitly.
 - **USER_BUTTON on board operation**: (PC_13 or PA_0)  
@@ -62,11 +78,15 @@
 
 #### Hardware setting/Schematic: (16bit sound resolution)
 
+---
+
 - Refer to the file, [port_setting.md](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.md).
 - See folder `doc/*`  
 ![](http://mpu.up.seesaa.net/image/16bit-wave-player-output-schema.png)  
 
 #### SD Card connection
+
+---
 
 ```console
 Pin side
@@ -99,6 +119,8 @@ Pin side
 
 #### PWM output port
 
+---
+
 - Left  upper(Hi)  PWM 8bit out: PB_5 (TM3_CH2)  
 - Right upper(Hi)  PWM 8bit out: PB_4 (TM3_CH1)  
 - Left  lower(Low) PWM 8bit out: PC_9 (TM3_CH4)  
@@ -106,19 +128,27 @@ Pin side
 
 #### LED indicator
 
+---
+
 - See [port_setting.md](https://github.com/dinau/stm32-wave-player-pwm-super-lite-nim/blob/main/port_setting.md).
 - If set up LED device to "LED indicator port", it will be dimmer during play mode (regular speed) and pause mode (fast speed).
 
 #### Nim compiler
 
-- Recomended nim compiler version is **nim-1.6.4** at this time.
+---
+
+- Recomended nim compiler version is **nim-1.6.12** at this time.
 
 #### C compiler: arm-none-eabi-gcc
 
+---
+
 - v4.8.3 or later.  
-- Recomend [GNU Arm Embedded Toolchain](https://developer.arm.com/open-source/gnu-toolchain/gnu-rm)  
+- Recomend [GNU Arm Embedded Toolchain](https://developer.arm.com/downloads/-/arm-gnu-toolchain-downloads)
 
 #### Compiling source code
+
+---
 
 - Example: (NUCLEO-F411RE board)
 
@@ -163,6 +193,8 @@ If you don't like to compile from source code, you can immediately upload [doc/h
 
 #### Output music filename  through UART port
 
+---
+
 By default music filename is send through default UART(USB-CDC on Nucleo boards) port.  
 Baudrate is **115200bps**.  
 ![](http://mpu.up.seesaa.net/image/filename-to-uart-port.png)  
@@ -170,6 +202,8 @@ If you don't need UART output feature, set **UART_INFO\* = false** in [src/conf_
 recompile the project.
 
 #### Simple less bits mode
+
+---
 
 If set **PWM16BIT\* = false** in src/conf_sys.nim and recompile the project, **simple less bits mode** is enabled.  
 In spite of less parts, wirings and PCM bit length, it has fairly sound quality.  
@@ -188,6 +222,8 @@ In spite of less parts, wirings and PCM bit length, it has fairly sound quality.
 | STM32F4Discovery |            10bit |              84MHz |
 
 #### Pursue small code size
+
+---
 
 In `src/conf_sys.nim`,by eliminating some functionalities,  
 the code size can be further reduced. For instance, set as follows:  
@@ -215,6 +251,8 @@ and support stereo/mono, fs=32KHz,44.1KHz.
 
 #### Other links
 
+---
+
 - Wave player project, Super lite series
   - Nim language  
      [Arduino Wave Player PWM Super Lite Nim / Nim](https://github.com/dinau/arduino-wave-player-pwm-super-lite-nim) (Completed.)
@@ -222,4 +260,3 @@ and support stereo/mono, fs=32KHz,44.1KHz.
      [Wave Player Super Lite / STM32(F0,L1,F4) / Mbed2 / C++](https://os.mbed.com/users/mimi3/code/wave_player_super_lite) (Completed.)
   - Jal language  
      [Pwm Wave Player Jalv2 / PIC16F1xxx / Jal](https://github.com/dinau/16f-wave-player-pwm-super-lite-jalv2) (Completed.)
-
